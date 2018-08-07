@@ -9,14 +9,15 @@ default_action :create
 
 action :create do
   with_run_context :root do
-    edit_resource(:template, config_file) do |new_resource|
+    nr = new_resource
+    edit_resource(:template, nr.config_file) do
       variables[:jobs] ||= {}
-      variables[:jobs][new_resource.name] ||= {}
-      variables[:jobs][new_resource.name]['scrape_interval'] = new_resource.scrape_interval
-      variables[:jobs][new_resource.name]['scrape_timeout'] = new_resource.scrape_timeout
-      variables[:jobs][new_resource.name]['target'] = new_resource.target
-      variables[:jobs][new_resource.name]['metrics_path'] = new_resource.metrics_path
-      variables[:jobs][new_resource.name]['labels'] = new_resource.labels
+      variables[:jobs][nr.name] ||= {}
+      variables[:jobs][nr.name]['scrape_interval'] = nr.scrape_interval
+      variables[:jobs][nr.name]['scrape_timeout'] = nr.scrape_timeout
+      variables[:jobs][nr.name]['target'] = nr.target
+      variables[:jobs][nr.name]['metrics_path'] = nr.metrics_path
+      variables[:jobs][nr.name]['labels'] = nr.labels
 
       action :nothing
       delayed_action :create
